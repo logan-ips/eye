@@ -131,8 +131,8 @@ return [
      |--------------------------------------------------------------------------
      |
      | If you have enabled 'monitor_composer_lock' - then a daily check of
-     | your composer.lock file will occur against the SensioLabs Security
-     | check at https://security.sensiolabs.org/
+     | your composer.lock file will occur against the Symfony Security
+     | check at https://security.symfony.com/
      |
      | The below is the location of your composer.lock file. You only need to
      | modify this config if your lock file is in a different location than

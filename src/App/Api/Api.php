@@ -191,7 +191,7 @@ class Api
     }
 
     /**
-     * Run a check for the composer lock against the SensioLabs API.
+     * Run a check for the composer lock against the Symfony Security API.
      *
      * @return json
      */
@@ -205,10 +205,10 @@ class Api
             } else {
                 $this->headers['multipart'] = [['name' => 'lock', 'contents' => fopen(config('eyewitness.composer_lock_file_location'), 'r')]];
             }
-            $response = $this->client->post('https://security.sensiolabs.org/check_lock', $this->headers);
+            $response = $this->client->post('https://security.symfony.com/check_lock', $this->headers);
             return json_decode($response->getBody()->getContents(), true);
         } catch (Exception $e) {
-            LogFacade::error('SensioLabs Composer Lock check failed due to: '.$e->getMessage());
+            LogFacade::error('Symfony Security Composer Lock check failed due to: '.$e->getMessage());
         }
 
         return null;
