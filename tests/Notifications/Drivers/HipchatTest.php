@@ -13,14 +13,14 @@ class HipchatTest extends TestCase
 {
     protected $guzzle;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
         $this->guzzle = Mockery::mock(Client::class);
         $this->app->instance(Client::class, $this->guzzle);
 
-        $this->artisan('migrate', ['--database' => 'testbench']);
+        $this->withoutMockingConsoleOutput()->artisan('migrate', ['--database' => 'testbench']);
     }
 
     public function test_sends_hipchat()

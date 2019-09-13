@@ -10,7 +10,7 @@ class RegenerateCommandTest extends TestCase
 {
     protected $command;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -26,11 +26,11 @@ class RegenerateCommandTest extends TestCase
         $this->command->shouldReceive('writeEnvFile')->never();
         $this->command->shouldReceive('generateRandom')->never();
 
-        $this->artisan('eyewitness:regenerate', ['--no-interaction' => true]);
+        $this->withoutMockingConsoleOutput()->artisan('eyewitness:regenerate', ['--no-interaction' => true]);
 
         $output = Artisan::output();
 
-        $this->assertContains('Aborted.', $output);
+        $this->assertStringContainsString('Aborted.', $output);
     }
 
     public function test_command_inserts_when_no_previous_key_exists()
@@ -43,13 +43,13 @@ class RegenerateCommandTest extends TestCase
         $this->command->shouldReceive('writeEnvFile')->with('APP_TEST=EXAMPLE'.PHP_EOL.'EYEWITNESS_SECRET_KEY=KEY123')->once();
         $this->command->shouldReceive('writeEnvFile')->with('APP_TEST=EXAMPLE'.PHP_EOL.'EYEWITNESS_SUBSCRIPTION_KEY=')->once();
 
-        $this->artisan('eyewitness:regenerate', ['--force' => true, '--no-interaction' => true]);
+        $this->withoutMockingConsoleOutput()->artisan('eyewitness:regenerate', ['--force' => true, '--no-interaction' => true]);
 
         $output = Artisan::output();
 
-        $this->assertContains('Your new Eyewitness API keys have been updated and saved to your .env file', $output);
-        $this->assertContains('TOKEN123', $output);
-        $this->assertContains('KEY123', $output);
+        $this->assertStringContainsString('Your new Eyewitness API keys have been updated and saved to your .env file', $output);
+        $this->assertStringContainsString('TOKEN123', $output);
+        $this->assertStringContainsString('KEY123', $output);
     }
 
     public function test_command_updates_previous_keys()
@@ -77,13 +77,13 @@ class RegenerateCommandTest extends TestCase
                                                             'EYEWITNESS_SECRET_KEY=OLD789'.PHP_EOL.
                                                             'EYEWITNESS_SUBSCRIPTION_KEY=')->once();
 
-        $this->artisan('eyewitness:regenerate', ['--force' => true, '--no-interaction' => true]);
+        $this->withoutMockingConsoleOutput()->artisan('eyewitness:regenerate', ['--force' => true, '--no-interaction' => true]);
 
         $output = Artisan::output();
 
-        $this->assertContains('Your new Eyewitness API keys have been updated and saved to your .env file', $output);
-        $this->assertContains('TOKEN123', $output);
-        $this->assertContains('KEY123', $output);
+        $this->assertStringContainsString('Your new Eyewitness API keys have been updated and saved to your .env file', $output);
+        $this->assertStringContainsString('TOKEN123', $output);
+        $this->assertStringContainsString('KEY123', $output);
         $this->assertEquals('TOKEN123', config('eyewitness.app_token'));
         $this->assertEquals('KEY123', config('eyewitness.secret_key'));
     }

@@ -10,7 +10,7 @@ class LoggerTest extends TestCase
 {
     protected $eye;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

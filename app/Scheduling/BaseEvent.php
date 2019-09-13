@@ -11,6 +11,7 @@ use Eyewitness\Eye\Notifications\Messages\Scheduler\Slow;
 use Eyewitness\Eye\Notifications\Messages\Scheduler\Fast;
 use Eyewitness\Eye\Notifications\Messages\Scheduler\Error;
 use Eyewitness\Eye\Notifications\Messages\Scheduler\Working;
+use Illuminate\Support\Str;
 
 trait BaseEvent
 {
@@ -354,7 +355,7 @@ trait BaseEvent
         $parts = explode(" ", $command);
 
         if (isset($parts[2])) {
-            if (str_contains(strtolower($parts[0]), 'php') && str_contains(strtolower($parts[1]), 'artisan')) {
+            if (Str::contains(strtolower($parts[0]), 'php') && Str::contains(strtolower($parts[1]), 'artisan')) {
                 unset($parts[0]);
                 unset($parts[1]);
                 return implode(" ", $parts);

@@ -6,11 +6,11 @@ use Eyewitness\Eye\Test\TestCase;
 
 class DashboardControllerTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
-        $this->artisan('migrate', ['--database' => 'testbench']);
+        $this->withoutMockingConsoleOutput()->artisan('migrate', ['--database' => 'testbench']);
     }
 
     public function test_default_route_when_logged_in()

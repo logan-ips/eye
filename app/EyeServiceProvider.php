@@ -202,7 +202,7 @@ class EyeServiceProvider extends ServiceProvider
     {
         if (config('eyewitness.monitor_scheduler')) {
             $this->app->extend('Illuminate\Console\Scheduling\ScheduleRunCommand', function () {
-                return new ScheduleRunCommand(app('Illuminate\Console\Scheduling\Schedule'));
+                return new ScheduleRunCommand();
             });
         }
     }
@@ -258,7 +258,7 @@ class EyeServiceProvider extends ServiceProvider
     {
         $this->app->singleton('queue.worker', function () {
             if ($this->eye->laravelVersionIs('>=', '5.3.0')) {
-                return new Worker($this->app['queue'], $this->app['events'], $this->app[ExceptionHandler::class]);
+                return new Worker($this->app['queue'], $this->app['events'], $this->app[ExceptionHandler::class], function () { return app()->isDownForMaintenance(); });
             } else {
                 return new WorkerLegacy($this->app['queue'], $this->app['queue.failer'], $this->app['events']);
             }
@@ -274,7 +274,7 @@ class EyeServiceProvider extends ServiceProvider
     {
         $this->app->extend('command.queue.work', function () {
             if ($this->eye->laravelVersionIs('>=', '5.3.0')) {
-                return new WorkCommand($this->app['queue.worker']);
+                return new WorkCommand($this->app['queue.worker'], $this->app['cache.store']);
             } else {
                 return new LegacyWorkCommand($this->app['queue.worker']);
             }

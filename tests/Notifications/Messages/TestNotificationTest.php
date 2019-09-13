@@ -8,11 +8,11 @@ use Eyewitness\Eye\Notifications\Messages\TestMessage;
 
 class TestMessageTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
-        $this->artisan('migrate', ['--database' => 'testbench']);
+        $this->withoutMockingConsoleOutput()->artisan('migrate', ['--database' => 'testbench']);
     }
 
     public function test_base_message_does_safe_type_conversion()

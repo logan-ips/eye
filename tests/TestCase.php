@@ -48,7 +48,7 @@ abstract class TestCase extends Orchestra
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         if (! defined('LARAVEL_START')) {
             define('LARAVEL_START', microtime(true));
@@ -61,6 +61,15 @@ abstract class TestCase extends Orchestra
         $this->secret_key = config('eyewitness.secret_key');
 
         $this->withFactories(__DIR__.'/../database/factories');
+    }
+
+    public function tearDown(): void
+    {
+        $config = app('config');
+
+        parent::tearDown();
+
+        app()->instance('config', $config);
     }
 
     /**

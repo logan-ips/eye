@@ -6,12 +6,13 @@ use Mockery;
 use Eyewitness\Eye\Api;
 use Eyewitness\Eye\Test\TestCase;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Str;
 
 class DebugCommandTest extends TestCase
 {
     protected $api;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -29,17 +30,17 @@ class DebugCommandTest extends TestCase
                                                                               'code' => 200,
                                                                               'message' => 'okauth']);
 
-        $this->artisan('eyewitness:debug');
+        $this->withoutMockingConsoleOutput()->artisan('eyewitness:debug');
 
         $output = Artisan::output();
 
-        $this->assertTrue(str_contains($output, 'APP_TEST'));
-        $this->assertTrue(str_contains($output, 'SECRET_TEST'));
+        $this->assertTrue(Str::contains($output, 'APP_TEST'));
+        $this->assertTrue(Str::contains($output, 'SECRET_TEST'));
 
-        $this->assertTrue(str_contains($output, 'Status Code:'));
-        $this->assertTrue(str_contains($output, '200'));
-        $this->assertTrue(str_contains($output, 'Status Message'));
-        $this->assertTrue(str_contains($output, 'okping'));
-        $this->assertTrue(str_contains($output, 'okauth'));
+        $this->assertTrue(Str::contains($output, 'Status Code:'));
+        $this->assertTrue(Str::contains($output, '200'));
+        $this->assertTrue(Str::contains($output, 'Status Message'));
+        $this->assertTrue(Str::contains($output, 'okping'));
+        $this->assertTrue(Str::contains($output, 'okauth'));
     }
 }

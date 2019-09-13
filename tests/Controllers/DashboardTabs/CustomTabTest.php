@@ -6,11 +6,11 @@ use Eyewitness\Eye\Test\TestCase;
 
 class CustomTabTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
-        $this->artisan('migrate', ['--database' => 'testbench']);
+        $this->withoutMockingConsoleOutput()->artisan('migrate', ['--database' => 'testbench']);
     }
 
     public function test_example_custom_monitor_loads_with_custom_monitor()

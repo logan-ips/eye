@@ -12,7 +12,7 @@ class AuthenticateTest extends TestCase
 
     protected $ar;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

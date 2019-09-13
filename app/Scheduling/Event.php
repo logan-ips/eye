@@ -10,6 +10,7 @@ use Illuminate\Console\Scheduling\Event as OriginalEvent;
 use Symfony\Component\Process\ProcessUtils as SymfonyProcessUtils;
 use Eyewitness\Eye\Scheduling\BaseEventTrait;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Support\Str;
 
 class Event extends OriginalEvent
 {
@@ -173,7 +174,7 @@ class Event extends OriginalEvent
 
         $text = file_get_contents($this->output);
 
-        if (str_contains($this->output, 'eyewitness_cron_') && file_exists($this->output)) {
+        if (Str::contains($this->output, 'eyewitness_cron_') && file_exists($this->output)) {
             unlink($this->output);
         }
 

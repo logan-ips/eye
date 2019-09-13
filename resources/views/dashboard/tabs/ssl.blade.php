@@ -72,9 +72,9 @@
                                 <p class="block tracking-wide text-grey text-right mr-1">Certificate grade</p>
                             </div>
                             <div class="w-1/2 md:w-3/4">
-                                @if (starts_with($ssl->record['grade'], 'A'))
+                                @if (\Illuminate\Support\Str::startsWith($ssl->record['grade'], 'A'))
                                     <span class="shadow uppercase font-semibold rounded text-xs text-white bg-green py-1 px-2 mr-1 ml-4">{{ $ssl->record['grade'] }}</span>
-                                @elseif (starts_with($ssl->record['grade'], 'B'))
+                                @elseif (\Illuminate\Support\Str::startsWith($ssl->record['grade'], 'B'))
                                     <span class="shadow uppercase font-semibold rounded text-xs text-white bg-orange py-1 px-2 mr-1 ml-4">{{ $ssl->record['grade'] }}</span>
                                 @else
                                     <span class="shadow uppercase font-semibold rounded text-xs text-white bg-red py-1 px-2 mr-1 ml-4">{{ $ssl->record['grade'] }}</span>

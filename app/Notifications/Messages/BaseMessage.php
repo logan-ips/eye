@@ -5,6 +5,7 @@ namespace Eyewitness\Eye\Notifications\Messages;
 use Eyewitness\Eye\Eye;
 use Eyewitness\Eye\Repo\Notifications\Severity;
 use Eyewitness\Eye\Notifications\Messages\MessageInterface;
+use Illuminate\Support\Str;
 
 abstract class BaseMessage implements MessageInterface
 {
@@ -69,6 +70,6 @@ abstract class BaseMessage implements MessageInterface
      */
     public function safeType()
     {
-        return snake_case($this->type());
+        return Str::snake($this->type());
     }
 }

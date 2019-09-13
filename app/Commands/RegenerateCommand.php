@@ -3,6 +3,7 @@
 namespace Eyewitness\Eye\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 
 class RegenerateCommand extends Command
 {
@@ -209,6 +210,6 @@ class RegenerateCommand extends Command
      */
     public function generateRandom($size)
     {
-        return str_random($size);
+        return Str::random($size);
     }
 }

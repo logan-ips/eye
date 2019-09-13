@@ -4,6 +4,7 @@ namespace Eyewitness\Eye\Commands\Framework;
 
 use Eyewitness\Eye\Eye;
 use Eyewitness\Eye\Scheduling\CustomEvents;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Console\Scheduling\ScheduleRunCommand as OriginalScheduleRunCommand;
 
 class ScheduleRunCommand extends OriginalScheduleRunCommand
@@ -22,9 +23,9 @@ class ScheduleRunCommand extends OriginalScheduleRunCommand
      *
      * @return void
      */
-    public function fire()
+    public function fire(Schedule $schedule)
     {
-        $this->runScheduledEvents();
+        $this->runScheduledEvents($schedule);
 
         if (! $this->eventsRan) {
             $this->info('No scheduled commands are ready to run.');
@@ -37,9 +38,9 @@ class ScheduleRunCommand extends OriginalScheduleRunCommand
      *
      * @return void
      */
-    protected function runScheduledEvents()
+    protected function runScheduledEvents(Schedule $schedule)
     {
-        foreach ($this->schedule->dueEvents($this->laravel) as $event) {
+        foreach ($schedule->dueEvents($this->laravel) as $event) {
             $event = $this->convertEvent($event);
 
             if ($this->canAccessFiltersPass($event) && (! $event->filtersPass($this->laravel))) {
@@ -47,7 +48,7 @@ class ScheduleRunCommand extends OriginalScheduleRunCommand
             }
 
             if ($event->onOneServer) {
-                $this->runSingleServerEvent($event);
+                $this->runSingleServerEvent($schedule, $event);
             } else {
                 $this->runEvent($event);
             }
@@ -60,9 +61,9 @@ class ScheduleRunCommand extends OriginalScheduleRunCommand
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(Schedule $schedule)
     {
-        return $this->fire();
+        return $this->fire($schedule);
     }
 
     /**

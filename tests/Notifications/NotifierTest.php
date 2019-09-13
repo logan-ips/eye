@@ -14,14 +14,14 @@ class NotifierTest extends TestCase
 {
     protected $channel;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
         $this->channel = Mockery::mock(Email::class);
         $this->app->instance('\\Eyewitness\\Eye\\Notifications\\Drivers\\Email', $this->channel);
 
-        $this->artisan('migrate', ['--database' => 'testbench']);
+        $this->withoutMockingConsoleOutput()->artisan('migrate', ['--database' => 'testbench']);
     }
 
     public function test_send_fires_correct_channel()

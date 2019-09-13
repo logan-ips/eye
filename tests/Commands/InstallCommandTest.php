@@ -24,7 +24,7 @@ class InstallCommandTest extends TestCase
 
     protected $scheduler;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -59,12 +59,12 @@ class InstallCommandTest extends TestCase
         $this->pollCommand->shouldReceive('handle')->never();
         $this->scheduler->shouldReceive('install')->never();
 
-        $this->artisan('eyewitness:install', ['--no-interaction' => true]);
+        $this->withoutMockingConsoleOutput()->artisan('eyewitness:install', ['--no-interaction' => true]);
 
         $output = Artisan::output();
 
-        $this->assertContains('It appears that the Eyewitness package has already been installed.', $output);
-        $this->assertContains('Aborted. No changes were made.', $output);
+        $this->assertStringContainsString('It appears that the Eyewitness package has already been installed.', $output);
+        $this->assertStringContainsString('Aborted. No changes were made.', $output);
     }
 
     public function test_command_installs()
@@ -78,14 +78,14 @@ class InstallCommandTest extends TestCase
         $this->pollCommand->shouldReceive('handle')->once();
         $this->scheduler->shouldReceive('install')->once();
 
-        $this->artisan('eyewitness:install', ['--no-interaction' => true]);
+        $this->withoutMockingConsoleOutput()->artisan('eyewitness:install', ['--no-interaction' => true]);
 
         $output = Artisan::output();
 
-        $this->assertContains('Installing and configuring Eyewitness.io package...', $output);
-        $this->assertContains('You can now visit', $output);
-        $this->assertContains(config('app.url').'/'.config('eyewitness.base_uri'), $output);
-        $this->assertContains(route('eyewitness.login'), $output);
+        $this->assertStringContainsString('Installing and configuring Eyewitness.io package...', $output);
+        $this->assertStringContainsString('You can now visit', $output);
+        $this->assertStringContainsString(config('app.url').'/'.config('eyewitness.base_uri'), $output);
+        $this->assertStringContainsString(route('eyewitness.login'), $output);
     }
 }
 

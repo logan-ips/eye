@@ -9,7 +9,7 @@ class EyeTest extends TestCase
 {
     protected $eye;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -18,7 +18,7 @@ class EyeTest extends TestCase
 
     public function test_eye_is_constructed_correctly()
     {
-        $this->artisan('migrate', ['--database' => 'testbench']);
+        $this->withoutMockingConsoleOutput()->artisan('migrate', ['--database' => 'testbench']);
 
         $this->assertInstanceOf(\Eyewitness\Eye\Notifications\Notifier::class, $this->eye->notifier());
         $this->assertInstanceOf(\Eyewitness\Eye\Monitors\Application::class, $this->eye->application());

@@ -7,11 +7,11 @@ use Eyewitness\Eye\Repo\Scheduler;
 
 class SchedulerTabTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
-        $this->artisan('migrate', ['--database' => 'testbench']);
+        $this->withoutMockingConsoleOutput()->artisan('migrate', ['--database' => 'testbench']);
     }
 
     public function test_schedulers_tab_disables()

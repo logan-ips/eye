@@ -8,13 +8,14 @@ use Eyewitness\Eye\Test\TestCase;
 use Eyewitness\Eye\Monitors\Custom;
 use Illuminate\Support\Facades\Artisan;
 use Eyewitness\Eye\Repo\CustomWitnessHistory;
+use Illuminate\Support\Str;
 
 class CustomCommandTest extends TestCase
 {
     protected $eye;
     protected $witness;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -28,13 +29,13 @@ class CustomCommandTest extends TestCase
     {
         $this->eye->shouldReceive('getCustomWitnesses')->with(true)->once()->andReturn([]);
 
-        $this->artisan('eyewitness:custom');
+        $this->withoutMockingConsoleOutput()->artisan('eyewitness:custom');
 
         $output = Artisan::output();
 
-        $this->assertTrue(str_contains($output, 'Starting Custom Witness command...'));
-        $this->assertTrue(str_contains($output, 'Custom Witness command complete...'));
-        $this->assertFalse(str_contains($output, 'Running:'));
+        $this->assertTrue(Str::contains($output, 'Starting Custom Witness command...'));
+        $this->assertTrue(Str::contains($output, 'Custom Witness command complete...'));
+        $this->assertFalse(Str::contains($output, 'Running:'));
     }
 
     public function test_command_runs_custom_witness_with_success()
@@ -46,13 +47,13 @@ class CustomCommandTest extends TestCase
 
         $this->eye->shouldReceive('getCustomWitnesses')->with(true)->once()->andReturn([$this->witness]);
 
-        $this->artisan('eyewitness:custom');
+        $this->withoutMockingConsoleOutput()->artisan('eyewitness:custom');
 
         $output = Artisan::output();
 
-        $this->assertTrue(str_contains($output, 'Starting Custom Witness command...'));
-        $this->assertTrue(str_contains($output, 'Custom Witness command complete...'));
-        $this->assertTrue(str_contains($output, 'Running: example_name'));
+        $this->assertTrue(Str::contains($output, 'Starting Custom Witness command...'));
+        $this->assertTrue(Str::contains($output, 'Custom Witness command complete...'));
+        $this->assertTrue(Str::contains($output, 'Running: example_name'));
     }
 
     public function test_command_runs_custom_witness_with_failure()
@@ -64,13 +65,13 @@ class CustomCommandTest extends TestCase
 
         $this->eye->shouldReceive('getCustomWitnesses')->with(true)->once()->andReturn([$this->witness]);
 
-        $this->artisan('eyewitness:custom');
+        $this->withoutMockingConsoleOutput()->artisan('eyewitness:custom');
 
         $output = Artisan::output();
 
-        $this->assertTrue(str_contains($output, 'Starting Custom Witness command...'));
-        $this->assertTrue(str_contains($output, 'Custom Witness command complete...'));
-        $this->assertTrue(str_contains($output, 'Running: example_name'));
+        $this->assertTrue(Str::contains($output, 'Starting Custom Witness command...'));
+        $this->assertTrue(Str::contains($output, 'Custom Witness command complete...'));
+        $this->assertTrue(Str::contains($output, 'Running: example_name'));
     }
 }
 

@@ -13,21 +13,21 @@ use Eyewitness\Eye\Repo\Notifications\History;
 
 class PruneCommandTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
-        $this->artisan('migrate', ['--database' => 'testbench']);
+        $this->withoutMockingConsoleOutput()->artisan('migrate', ['--database' => 'testbench']);
     }
 
     public function test_prune()
     {
         config(['eyewitness.days_to_keep_history' => 10]);
 
-        $this->artisan('eyewitness:prune');
+        $this->withoutMockingConsoleOutput()->artisan('eyewitness:prune');
 
         $output = Artisan::output();
 
-        $this->assertContains('Eyewitness prune complete', $output);
+        $this->assertStringContainsString('Eyewitness prune complete', $output);
     }
 }

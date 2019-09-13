@@ -11,11 +11,11 @@ class BaseEventTest extends TestCase
 {
     protected $base;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
-        $this->artisan('migrate', ['--database' => 'testbench']);
+        $this->withoutMockingConsoleOutput()->artisan('migrate', ['--database' => 'testbench']);
 
         $this->base = new myBaseEventMockClass;
     }

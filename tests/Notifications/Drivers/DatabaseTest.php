@@ -10,11 +10,11 @@ use Eyewitness\Eye\Notifications\Messages\TestMessage;
 
 class DatabaseTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
-        $this->artisan('migrate', ['--database' => 'testbench']);
+        $this->withoutMockingConsoleOutput()->artisan('migrate', ['--database' => 'testbench']);
     }
 
     public function test_inserts_history()

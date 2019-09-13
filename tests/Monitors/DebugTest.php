@@ -16,11 +16,11 @@ class DebugTest extends TestCase
 
     protected $debug;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
-        $this->artisan('migrate', ['--database' => 'testbench']);
+        $this->withoutMockingConsoleOutput()->artisan('migrate', ['--database' => 'testbench']);
 
         $this->notifier = Mockery::mock(Notifier::class);
         $this->app->instance(Notifier::class, $this->notifier);

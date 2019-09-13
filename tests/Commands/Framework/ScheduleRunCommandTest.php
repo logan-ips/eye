@@ -13,11 +13,11 @@ class ScheduleRunCommandTest extends TestCase
 {
     protected $schedule;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
-        $this->artisan('migrate', ['--database' => 'testbench']);
+        $this->withoutMockingConsoleOutput()->artisan('migrate', ['--database' => 'testbench']);
 
         Artisan::command('example:one', function () {
             $this->info('From example:one command');
@@ -42,7 +42,7 @@ class ScheduleRunCommandTest extends TestCase
 
         $output = Artisan::output();
 
-        $this->assertContains('No scheduled commands are ready to run', $output);
+        $this->assertStringContainsString('No scheduled commands are ready to run', $output);
     }
 
     public function test_commands_inserted_into_database_first_time()
@@ -78,9 +78,9 @@ class ScheduleRunCommandTest extends TestCase
             'without_overlapping' => '0',
         ]);
 
-        $this->assertContains('Running scheduled command: * * * * *', $output);
-        $this->assertContains('example:one', $output);
-        $this->assertContains('example:two --force', $output);
+        $this->assertStringContainsString('Running scheduled command: * * * * *', $output);
+        $this->assertStringContainsString('example:one', $output);
+        $this->assertStringContainsString('example:two --force', $output);
     }
 
     public function test_pings_inserted_into_database()
@@ -98,7 +98,7 @@ class ScheduleRunCommandTest extends TestCase
         $this->assertEquals($scheduler->id, $ping->scheduler_id);
         $this->assertGreaterThan(0, $ping->time_to_run);
         $this->assertEquals("1", $ping->exitcode);
-        $this->assertContains("Could not open input file: artisan", $ping->output);
+        $this->assertStringContainsString("Could not open input file: artisan", $ping->output);
     }
 
     public function test_pings_honour_cron_capture_config()

@@ -10,7 +10,7 @@ class BladeDirectivesTest extends TestCase
 {
     protected $blade;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -23,9 +23,9 @@ class BladeDirectivesTest extends TestCase
 
         $string = $this->blade->getIconString('example');
 
-        $this->assertContains('<svg', $string);
-        $this->assertContains('width="32" height="32"', $string);
-        $this->assertContains('class=""', $string);
+        $this->assertStringContainsString('<svg', $string);
+        $this->assertStringContainsString('width="32" height="32"', $string);
+        $this->assertStringContainsString('class=""', $string);
     }
 
     public function test_generates_icon_string_with_overrides()
@@ -34,8 +34,8 @@ class BladeDirectivesTest extends TestCase
 
         $string = $this->blade->getIconString('example', 'test', 16, 48);
 
-        $this->assertContains('<svg', $string);
-        $this->assertContains('width="16" height="48"', $string);
-        $this->assertContains('class="test"', $string);
+        $this->assertStringContainsString('<svg', $string);
+        $this->assertStringContainsString('width="16" height="48"', $string);
+        $this->assertStringContainsString('class="test"', $string);
     }
 }

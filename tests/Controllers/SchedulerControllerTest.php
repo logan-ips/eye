@@ -8,11 +8,11 @@ use Eyewitness\Eye\Repo\History\Scheduler as History;
 
 class SchedulerControllerTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
-        $this->artisan('migrate', ['--database' => 'testbench']);
+        $this->withoutMockingConsoleOutput()->artisan('migrate', ['--database' => 'testbench']);
     }
 
     public function test_show_scheduler_page_loads_with_no_pagination()
