@@ -5,7 +5,10 @@ namespace Eyewitness\Eye\Commands\Framework;
 use Eyewitness\Eye\Eye;
 use Eyewitness\Eye\Scheduling\CustomEvents;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Console\Events\ScheduledTaskFinished;
+use Illuminate\Console\Events\ScheduledTaskStarting;
 use Illuminate\Console\Scheduling\ScheduleRunCommand as OriginalScheduleRunCommand;
+use Illuminate\Contracts\Events\Dispatcher;
 
 class ScheduleRunCommand extends OriginalScheduleRunCommand
 {
@@ -23,9 +26,9 @@ class ScheduleRunCommand extends OriginalScheduleRunCommand
      *
      * @return void
      */
-    public function fire(Schedule $schedule)
+    public function fire(Schedule $schedule, Dispatcher $dispatcher)
     {
-        $this->runScheduledEvents($schedule);
+        $this->runScheduledEvents($schedule, $dispatcher);
 
         if (! $this->eventsRan) {
             $this->info('No scheduled commands are ready to run.');
@@ -38,8 +41,10 @@ class ScheduleRunCommand extends OriginalScheduleRunCommand
      *
      * @return void
      */
-    protected function runScheduledEvents(Schedule $schedule)
+    protected function runScheduledEvents(Schedule $schedule, Dispatcher $dispatcher)
     {
+        $this->dispatcher = $dispatcher;
+
         foreach ($schedule->dueEvents($this->laravel) as $event) {
             $event = $this->convertEvent($event);
 
@@ -61,9 +66,9 @@ class ScheduleRunCommand extends OriginalScheduleRunCommand
      *
      * @return mixed
      */
-    public function handle(Schedule $schedule)
+    public function handle(Schedule $schedule, Dispatcher $dispatcher)
     {
-        return $this->fire($schedule);
+        return $this->fire($schedule, $dispatcher);
     }
 
     /**
@@ -87,7 +92,18 @@ class ScheduleRunCommand extends OriginalScheduleRunCommand
     public function runEvent($event)
     {
         $this->line('<info>Running scheduled command:</info> '.$event->getSummaryForDisplay());
+
+        $this->dispatcher->dispatch(new ScheduledTaskStarting($event));
+
+        $start = microtime(true);
+
         $event->run($this->laravel);
+
+        $this->dispatcher->dispatch(new ScheduledTaskFinished(
+            $event,
+            round(microtime(true) - $start, 2)
+        ));
+
         $this->eventsRan = true;
     }
 }
