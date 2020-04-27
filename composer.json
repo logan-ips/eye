@@ -18,14 +18,14 @@
     ],
     "require": {
         "guzzlehttp/guzzle": "5.*|6.*",
-        "laravel/framework": "^6.0",
+        "laravel/framework": "^7.0",
         "nesbot/Carbon": "*",
         "eyewitness/cron-expression": "~3.0"
     },
     "require-dev": {
         "mockery/mockery": "~1.0",
         "phpunit/phpunit": "~8.0",
-        "orchestra/testbench": "^4.0",
+        "orchestra/testbench": "^5.1",
         "fzaninotto/faker": "~1.4"
     },
     "autoload": {

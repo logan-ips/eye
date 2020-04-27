@@ -9,6 +9,7 @@ use Illuminate\Console\Events\ScheduledTaskFinished;
 use Illuminate\Console\Events\ScheduledTaskStarting;
 use Illuminate\Console\Scheduling\ScheduleRunCommand as OriginalScheduleRunCommand;
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Contracts\Debug\ExceptionHandler as OriginalExceptionHandler;
 
 class ScheduleRunCommand extends OriginalScheduleRunCommand
 {
@@ -66,7 +67,7 @@ class ScheduleRunCommand extends OriginalScheduleRunCommand
      *
      * @return mixed
      */
-    public function handle(Schedule $schedule, Dispatcher $dispatcher)
+    public function handle(Schedule $schedule, Dispatcher $dispatcher, OriginalExceptionHandler $handler)
     {
         return $this->fire($schedule, $dispatcher);
     }

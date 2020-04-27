@@ -81,7 +81,7 @@ class Event extends OriginalEvent
     /**
      * Build the command for running the event in the foreground.
      *
-     * @return string
+     * @return array
      */
     public function buildForegroundCommand()
     {
@@ -90,6 +90,12 @@ class Event extends OriginalEvent
         } else {
             $output = LaravelProcessUtils::escapeArgument($this->output);
         }
+
+        $tmp = explode(' ', str_replace("'", '', $this->command));
+
+        return [$this->ensureCorrectUser($this->command.$this->getAppendOutput().$output.' 2>&1')];
+
+        return $tmp + [$this->getAppendOutput(), $output, '2>&1'];
 
         return $this->ensureCorrectUser($this->command.$this->getAppendOutput().$output.' 2>&1');
     }
