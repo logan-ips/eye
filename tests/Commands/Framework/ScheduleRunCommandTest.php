@@ -97,8 +97,8 @@ class ScheduleRunCommandTest extends TestCase
 
         $this->assertEquals($scheduler->id, $ping->scheduler_id);
         $this->assertGreaterThan(0, $ping->time_to_run);
-        $this->assertEquals(127, $ping->exitcode);
-        //$this->assertStringContainsString("Could not open input file: artisan", $ping->output);
+        $this->assertEquals("1", $ping->exitcode);
+        $this->assertStringContainsString("Could not open input file: artisan", $ping->output);
     }
 
     public function test_pings_honour_cron_capture_config()

@@ -64,7 +64,7 @@ class Event extends OriginalEvent
      */
     protected function runForegroundProcess(Container $container)
     {
-       $this->exitcode = (new Process($this->buildForegroundCommand(), base_path(), null, null, null))->run();
+   		$this->exitCode = (Process::fromShellCommandline($this->buildForegroundCommand(), base_path(), null, null, null))->run();
     }
 
     /**
@@ -75,13 +75,13 @@ class Event extends OriginalEvent
      */
     protected function newCommandInBackground(Container $container)
     {
-        (new Process($this->buildBackgroundCommand(), base_path(), null, null, null))->run();
+		(Process::fromShellCommandline($this->buildBackgroundCommand(), base_path(), null, null, null))->run();
     }
 
     /**
      * Build the command for running the event in the foreground.
      *
-     * @return array
+     * @return string
      */
     public function buildForegroundCommand()
     {
@@ -92,10 +92,6 @@ class Event extends OriginalEvent
         }
 
         $tmp = explode(' ', str_replace("'", '', $this->command));
-
-        return [$this->ensureCorrectUser($this->command.$this->getAppendOutput().$output.' 2>&1')];
-
-        return $tmp + [$this->getAppendOutput(), $output, '2>&1'];
 
         return $this->ensureCorrectUser($this->command.$this->getAppendOutput().$output.' 2>&1');
     }
@@ -135,7 +131,7 @@ class Event extends OriginalEvent
             $output = LaravelProcessUtils::escapeArgument($this->getDefaultOutput());
         }
 
-        return [$this->ensureCorrectUser('('.$background.' > '.$output.' 2>&1) > '.$output.' 2>&1 &')];
+        return $this->ensureCorrectUser('('.$background.' > '.$output.' 2>&1) > '.$output.' 2>&1 &');
     }
 
     /**
