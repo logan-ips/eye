@@ -135,7 +135,7 @@ class Event extends OriginalEvent
             $output = LaravelProcessUtils::escapeArgument($this->getDefaultOutput());
         }
 
-        return $this->ensureCorrectUser('('.$background.' > '.$output.' 2>&1) > '.$output.' 2>&1 &');
+        return [$this->ensureCorrectUser('('.$background.' > '.$output.' 2>&1) > '.$output.' 2>&1 &')];
     }
 
     /**
