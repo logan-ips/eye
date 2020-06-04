@@ -21,7 +21,7 @@ class DashboardController extends Controller
     {
         return view('eyewitness::dashboard.index')->withEye(app(Eye::class))
                                                   ->withTransformer(new ChartTransformer)
-                                                  ->withNotifications(History::orderBy('acknowledged')->orderBy('created_at', 'desc')->get())
+                                                  ->withNotifications(History::where('created_at', '>', now()->subDays(30))->orderBy('acknowledged')->orderBy('created_at', 'desc')->get())
                                                   ->withStatuses(Statuses::all())
                                                   ->withQueues(Queue::all())
                                                   ->withSchedulers(Scheduler::all());
