@@ -29,6 +29,6 @@ class Scheduler extends Model
 	 */
 	public function history()
 	{
-		return $this->hasMany(History::class)->where('created_at', '<', now()->subDays(60))->latest();
+		return $this->hasMany(History::class)->where('created_at', '>', now()->subDays(60))->latest();
 	}
 }

@@ -118,7 +118,7 @@ class ChartTransformer
 			return $this->database[$connection];
 		}
 
-		$history = Database::where('created_at', '>', now()->subDays(90))
+		$history = Database::where('created_at', '>', now()->subDays(22))
 			->where('meta', $connection)->get()->groupBy(function($item) {
 				return $item->created_at->format('Y-m-d');
 			})->map(function ($row) {
@@ -151,7 +151,7 @@ class ChartTransformer
 			return $this->queue[$queue->id];
 		}
 
-		$history = Queue::where('date', '>', now()->subDays(90))->where('queue_id', $queue->id)->get()->groupBy(function($item) {
+		$history = Queue::where('date', '>', now()->subDays(15))->where('queue_id', $queue->id)->get()->groupBy(function($item) {
 			return $item->date->format('Y-m-d');
 		})->map(function ($row) {
 			return [
