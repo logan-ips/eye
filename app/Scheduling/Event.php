@@ -64,7 +64,7 @@ class Event extends OriginalEvent
      */
     protected function runForegroundProcess(Container $container)
     {
-   		$this->exitCode = (Process::fromShellCommandline($this->buildForegroundCommand(), base_path(), null, null, null))->run();
+   		$this->exitcode = (Process::fromShellCommandline($this->buildForegroundCommand(), base_path(), null, null, null))->run();
     }
 
     /**
