@@ -1,12 +1,12 @@
 <?php
 
-namespace Eyewitness\Eye\Commands;
+namespace Eyewitness\Eye\Commands\Monitors;
 
 use Carbon\Carbon;
 use Eyewitness\Eye\Eye;
 use Illuminate\Console\Command;
 
-class PollCommand extends Command
+class PollDatabaseCommand extends Command
 {
     /**
      * The eye instance.
@@ -20,14 +20,14 @@ class PollCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'eyewitness:poll {--force}';
+    protected $signature = 'eyewitness:poll-database';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Eyewitness.io - command to poll the server. Will be called automatically by the package.';
+    protected $description = 'Eyewitness.io - command to poll the database. Will be called automatically by the package.';
 
     /**
      * Indicates whether the command should be shown in the Artisan command list.
@@ -56,21 +56,10 @@ class PollCommand extends Command
      */
     public function handle()
     {
-        if (config('eyewitness.monitor_scheduler')) {
-            $this->eye->scheduler()->poll();
+        if (config('eyewitness.monitor_database')) {
+            $this->eye->database()->poll();
         }
 
-        if (config('eyewitness.monitor_queue')) {
-            $this->eye->queue()->poll();
-        }
-
-        if ($this->option('force')) {
-            $this->eye->composer()->poll();
-            $this->eye->dns()->poll();
-        }
-
-        $this->eye->debug()->poll();
-
-        $this->info('Eyewitness poll complete.');
+        $this->info('Eyewitness database poll complete.');
     }
 }

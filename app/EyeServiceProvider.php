@@ -155,10 +155,12 @@ class EyeServiceProvider extends ServiceProvider
 
             if ($this->eye->laravelVersionIs('>=', '5.2.32') && config('eyewitness.enable_scheduler_background')) {
                 $schedule->command('eyewitness:poll')->cron('* * * * *')->runInBackground();
+                $schedule->command('eyewitness:poll-database')->cron('0 0 * * *')->runInBackground();
                 $schedule->command('eyewitness:custom')->cron('* * * * *')->runInBackground();
                 $schedule->command('eyewitness:prune')->cron('56 1 * * *')->runInBackground();
             } else {
                 $schedule->command('eyewitness:poll')->cron('* * * * *');
+                $schedule->command('eyewitness:poll-database')->cron('0 0 * * *');
                 $schedule->command('eyewitness:custom')->cron('* * * * *');
                 $schedule->command('eyewitness:prune')->cron('56 1 * * *');
             }
