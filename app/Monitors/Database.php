@@ -18,13 +18,13 @@ class Database extends BaseMonitor
      *
      * @return array
      */
-    public function poll()
+    public function poll($statusOnly = false)
     {
         foreach($this->getDatabases() as $db)
         {
             $this->handleStatusAlerts($db);
 
-            if ($db['status']) {
+            if ($db['status'] && !$statusOnly) {
                 $this->handleSizeAlerts($db);
 
                 History::create(['type' => 'database',

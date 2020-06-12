@@ -63,6 +63,9 @@ class PollCommand extends Command
         if (config('eyewitness.monitor_queue')) {
             $this->eye->queue()->poll();
         }
+		if (config('eyewitness.monitor_database')) {
+			$this->eye->database()->poll(true);
+		}
 
         if ($this->option('force')) {
             $this->eye->composer()->poll();
