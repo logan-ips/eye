@@ -232,6 +232,10 @@ trait BaseEvent
      */
     protected function handleNotifications()
     {
+        if (!$this->scheduler) {
+            return;
+        }
+
         if (($this->exitcode > 0) && $this->scheduler->alert_on_fail) {
             return app(Eye::class)->notifier()->alert(new Error(['scheduler' => $this->scheduler,
                                                                  'exitcode' => $this->exitcode]));
